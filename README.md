@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Team8 Repository 
 =====
 
-* Joshua Fink - joshua.james.f@gmail.com
+## Team Members 
+Joshua Fink - joshua.james.f@gmail.com
+Zheng Ding - jtappler@gmail.com
+
