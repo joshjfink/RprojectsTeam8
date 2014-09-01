@@ -1,4 +1,4 @@
-Team8
+Eighth Amendment
 =====
 
-Team8's Repository
+Zheng Ding - jtappler@gmail.com
