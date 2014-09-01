@@ -1,4 +1,4 @@
-Team8
+Team8 Repository 
 =====
 
-Team8's Repository
+* Joshua Fink - joshua.james.f@gmail.com
