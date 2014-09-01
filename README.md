@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-Team8 Repository 
+Eighth Amendment 
 =====
 
 ## Team Members 
