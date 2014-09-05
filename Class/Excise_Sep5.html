@@ -58,20 +58,20 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <div id="excise-3" class="section level3">
 <h3>Excise 3</h3>
 <pre class="r"><code>x = c(1L, 2L, 3L, 1L)
-attr(x, &quot;Levels&quot;) = c(&quot;sunny&quot;, &quot;cloudy&quot;, &quot;rain&quot;, &quot;snow&quot;)
+attr(x, &quot;levels&quot;) = c(&quot;sunny&quot;, &quot;cloudy&quot;, &quot;rain&quot;, &quot;snow&quot;)
 attr(x, &quot;class&quot;) = &quot;factor&quot;
 attributes(x)</code></pre>
-<pre><code>## $Levels
+<pre><code>## $levels
 ## [1] &quot;sunny&quot;  &quot;cloudy&quot; &quot;rain&quot;   &quot;snow&quot;  
 ## 
 ## $class
 ## [1] &quot;factor&quot;</code></pre>
 <pre class="r"><code>typeof(x)</code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
-<pre class="r"><code>attr(x, &quot;Levels&quot;) = c(&quot;sunny/cloudy&quot;, &quot;rain&quot;, &quot;snow&quot;)
+<pre class="r"><code>attr(x, &quot;levels&quot;) = c(&quot;sunny/cloudy&quot;, &quot;rain&quot;, &quot;snow&quot;)
 attr(x, &quot;class&quot;) = &quot;factor&quot;
 attributes(x)</code></pre>
-<pre><code>## $Levels
+<pre><code>## $levels
 ## [1] &quot;sunny/cloudy&quot; &quot;rain&quot;         &quot;snow&quot;        
 ## 
 ## $class
