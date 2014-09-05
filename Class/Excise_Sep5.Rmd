@@ -1,0 +1,21 @@
+---
+title: "Excise_Sep5"
+output: html_document
+---
+### Excise 3
+```{r echo = TRUE}
+x = c(1L, 2L, 3L, 1L)
+attr(x, "Levels") = c("sunny", "cloudy", "rain", "snow")
+attr(x, "class") = "factor"
+attributes(x)
+```
+
+```{r echo = TRUE}
+typeof(x)
+```
+
+```{r echo = TRUE}
+attr(x, "Levels") = c("sunny/cloudy", "rain", "snow")
+attr(x, "class") = "factor"
+attributes(x)
+```
