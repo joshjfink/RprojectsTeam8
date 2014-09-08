@@ -22,5 +22,6 @@ attributes(x)
 
 ### Excise 2
 ```{r echo = TRUE}
-d = read.csv("~/Sta523/data/evals.csv")
+d = read.csv("~cr173/Sta523/data/evals.csv")
+summary(d)
 ```
