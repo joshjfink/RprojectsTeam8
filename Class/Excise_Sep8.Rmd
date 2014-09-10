@@ -18,3 +18,25 @@ x[-((1:50)*2-1)]
 ```{r echo = TRUE}
 x[c(TRUE, TRUE, TRUE, FALSE) | x %% 2 ==0]
 ```
+
+### Excise 2
+(a)
+```{r echo = TRUE}
+d = read.csv("~cr173/Sta523/data/evals.csv")
+
+d$rank[d$rank == -999] <- "NA"
+d$rank[d$rank == -999] <- "NA"
+d$gender[d$gender == -999] <- "NA"
+d$cls_level[d$cls_level == -999] <- "NA"
+
+## d[](d[] == -999) = "NA"
+
+
+d$rank[d$rank == 0] <- "Teaching"
+d$rank[d$rank == 1] <- "Tenure Track"
+d$rank[d$rank == 2] <- "Tenured"
+d$gender[d$gender == 0] <- "male"
+d$gender[d$gender == 1] <- "female"
+d$cls_level[d$cls_level == 0] <- "lower division"
+d$cls_level[d$cls_level == 1] <- "upper division"
+```
