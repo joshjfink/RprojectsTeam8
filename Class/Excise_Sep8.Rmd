@@ -1,40 +1,48 @@
 ---
-title: "Excise_Sep8"
+title: "Eighth Amendment: 09/08 Exercises"
 output: html_document
 ---
-### Excise 1
-(a)
+### Exercise 1
+(a) Select every third value starting at position 2 in x.
 ```{r echo = TRUE}
 x = c(56, 3, 17, 2, 4, 9, 6, 5, 19, 5, 2, 3, 5, 0, 13, 12, 6, 31, 10, 21, 8, 4, 1, 1, 2, 5, 16, 1, 3, 8, 1, 3, 4, 8, 5, 2, 8, 6, 18, 40, 10, 20, 1, 27, 2, 11, 14, 5, 7, 0, 3, 0, 7, 0, 8, 10, 10, 12, 8, 82, 21, 3, 34, 55, 18, 2, 9, 29, 1, 4, 7, 14, 7, 1, 2, 7, 4, 74, 5, 0, 3, 13, 2, 8, 1, 6, 13, 7, 1, 10, 5, 2, 4, 4, 14, 15, 4, 17, 1, 9)
-x[seq(2, 100, by = 3)]
-x[seq(2, 100, by = 3)] = x[3*(1:33)-1]
-```
-(b)
-```{r echo = TRUE}
-x[-((1:50)*2-1)]
+x[seq(2, length(x), 3)]
 ```
 
-(d)
+(b) Remove all values with an odd index.
+```{r echo = TRUE}
+x[which(x%%2==0)]
+```
+
+(c) Select only the values that are primes. (You may assume all values are less than 100)
+```{r echo = TRUE}
+primegen=function(x){
+  return(sapply(x,function(z){sum(z/1:z==z%/%1:z)})==2)
+}
+x[(1:100)[primegen(1:100)]]
+```
+*Prime number function credit: http://perfdynamics.blogspot.com/*
+
+(d) Remove every 4th value, but only if it is odd.
 ```{r echo = TRUE}
 x[c(TRUE, TRUE, TRUE, FALSE) | x %% 2 ==0]
 ```
 
-### Excise 2
-(a)
+### Exercise 2
+Load the course eval data set using the following command:
 ```{r echo = TRUE}
 d = read.csv("~cr173/Sta523/data/evals.csv")
-
-d$rank[d$rank == -999] <- "NA"
-d$rank[d$rank == -999] <- "NA"
-d$gender[d$gender == -999] <- "NA"
-d$cls_level[d$cls_level == -999] <- "NA"
-
-## d[](d[] == -999) = "NA"
-
-
-d$rank[d$rank == 0] <- "Teaching"
-d$rank[d$rank == 1] <- "Tenure Track"
-d$rank[d$rank == 2] <- "Tenured"
+```
+(a) Some of the values in data frame are missing. They have been coded using the value -999, make sure that they are properly treated as NAs.
+```{r echo = TRUE}
+d[d==-999] <- NA
+d
+```
+(b) Use subsetting to replace the values of the categorical variables with the appropriate character strings (do not use factors).
+```{r echo = TRUE}
+d$rank[d$rank == 0] <- "teaching"
+d$rank[d$rank == 1] <- "tenure track"
+d$rank[d$rank == 2] <- "tenured"
 d$gender[d$gender == 0] <- "male"
 d$gender[d$gender == 1] <- "female"
 d$cls_level[d$cls_level == 0] <- "lower division"
