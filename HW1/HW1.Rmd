@@ -31,5 +31,68 @@ for (i in 1:193) {
   class[i,] = classRead[[i]][,2] 
 }
 
-cbind(id, pig, class)
+#Match pid
+pidRead = str_match_all(d, " pid=\"([0-9]*)\"")
+pid = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  pid[i,] = pidRead[[i]][,2] 
+}
+
+#Match mid
+midRead = str_match_all(d, " mid=\"([0-9]*)\"")
+mid = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  mid[i,] = midRead[[i]][,2] 
+}
+
+#Match pname
+pnameRead = str_match_all(d, " pname=\"([a-zA-Z ]*)\"")
+pname = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  pname[i,] = pnameRead[[i]][,2] 
+}
+
+#Match pteam
+pteamRead = str_match_all(d, " pteam=\"([a-zA-Z ]*)\"")
+pteam = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  pteam[i,] = pteamRead[[i]][,2] 
+}
+
+#Match ptime
+ptimeRead = str_match_all(d, " ptime=\"([0-9 ]*)\"")
+ptime = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  ptime[i,] = ptimeRead[[i]][,2] 
+}
+
+#Match paddtime
+paddtimeRead = str_match_all(d, " paddtime=\"([0-9 ]*)\"")
+paddtime = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  paddtime[i,] = ptype[[i]][,2] 
+}
+
+#Match ptype
+ptypeRead = str_match_all(d, " ptype=\"([a-z ]*)\"")
+ptype = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  ptype[i,] = ptypeRead[[i]][,2] 
+}
+
+#Match pteamimg
+pteamimgRead = str_match_all(d, " pteamimg=\"([a-z/a-z.a-z ]*)\"")
+pteamimg = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  pteamimg[i,] = pteamimgRead[[i]][,2] 
+}
+
+#Match pmatch
+pmatchRead = str_match_all(d, " pmatch=\"([a-z/a-z.a-z ]*)\"")
+pmatch = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  pmatch[i,] = pmatchRead[[i]][,2] 
+}
+
+cbind(id, pig, class, pid, mid, pname, pteam, ptime, paddtime, ptype, pteamimg, pmatch)
 ```
