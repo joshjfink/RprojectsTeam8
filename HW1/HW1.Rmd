@@ -6,9 +6,30 @@ output: html_document
 ---
 ```{r echo = TRUE}
 d = readLines("world_cup_goals_raw.txt")
+d
 library(stringr)
 d[1]
 t = d[1]
-t
-str_match_all(t, " id=")
+#Match id
+idRead = str_match_all(d, " id=\"([a-z0-9]*)\"")
+id = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  id[i,] = idRead[[i]][,2] 
+}
+
+#Match id
+pigRead = str_match_all(d, " pig=\"([0-9]*)\"")
+pig = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  pig[i,] = pigRead[[i]][,2] 
+}
+
+#Match class
+classRead = str_match_all(d, " class=\"([a-z ]*)\"")
+class = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  class[i,] = classRead[[i]][,2] 
+}
+
+cbind(id, pig, class)
 ```
