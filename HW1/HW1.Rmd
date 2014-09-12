@@ -1,0 +1,14 @@
+---
+title: "HW1"
+author: "Zheng Ding, Yanyu Liu, Joshua Fink"
+date: "September 12, 2014"
+output: html_document
+---
+```{r echo = TRUE}
+d = readLines("world_cup_goals_raw.txt")
+library(stringr)
+d[1]
+t = d[1]
+t
+str_match_all(t, " id=")
+```
