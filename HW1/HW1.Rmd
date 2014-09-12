@@ -93,5 +93,19 @@ for (i in 1:193) {
   pmatch[i,] = pmatchRead[[i]][,2] 
 }
 
-cbind(id, pig, class, pid, mid, pname, pteam, ptime, paddtime, ptype, pteamimg, pmatch)
+#Match style.right
+style.rightRead = str_match_all(d, "style=\"right. ([0-9]*)px.")
+style.right = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  style.right[i,] = style.rightRead[[i]][,2] 
+}
+
+#Match style.left
+style.leftRead = str_match_all(d, "top: ([0-9]*)px.")
+style.left = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  style.left[i,] = style.leftRead[[i]][,2] 
+}
+
+cbind(id, pig, class, pid, mid, pname, pteam, ptime, paddtime, ptype, pteamimg, pmatch, style.right, style.left)
 ```
