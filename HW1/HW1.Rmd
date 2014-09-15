@@ -16,7 +16,7 @@ for (i in 1:193) {
   id[i,] = idRead[[i]][,2] 
 }
 
-#Match id
+#Match pig
 pigRead = str_match_all(d, " pig=\"([0-9]*)\"")
 pig = matrix(NA, 193, 1, byrow = T)
 for (i in 1:193) {
@@ -94,18 +94,17 @@ for (i in 1:193) {
 }
 
 #Match style.right
-style.rightRead = str_match_all(d, "style=\"right. ([0-9]*)px.")
+style.rightRead = str_match_all(d, "right: ([0-9]*)px;")
 style.right = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
+for (i in 2:193) {
   style.right[i,] = style.rightRead[[i]][,2] 
 }
 
 #Match style.left
 style.leftRead = str_match_all(d, "top: ([0-9]*)px.")
 style.left = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  style.left[i,] = style.leftRead[[i]][,2] 
-}
+style.left[1,] = style.leftRead[[1]][,2] 
 
-cbind(id, pig, class, pid, mid, pname, pteam, ptime, paddtime, ptype, pteamimg, pmatch, style.right, style.left)
+Data = data.frame(ID = id, pig = pig, class = class, pid = pid, mid = mid, pname = pname, pteam = pteam, ptime = ptime, paddtime = paddtime, ptype = ptype, pteamimg = pteamimg, pmatch = pmatch, style.left = style.left, style.right = style.right)
+Data
 ```
