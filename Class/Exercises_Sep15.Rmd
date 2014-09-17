@@ -1,0 +1,115 @@
+---
+date: "September 15, 2014"
+output:
+  html_document:
+    highlight: tango
+    theme: flatly
+---
+
+### September 15th Exercises
+#### *Zheng Ding, Yanyu Liu, Joshua Fink*
+***
+#### Exercise 1a
+##### Implement functions that will find the largest value in each row (ignoring the cat column) using
+
+The apply function  
+The sapply or lapply function  
+The vapply function  
+A single for loop  
+Two nested for loops  
+
+##### Benchmark all of your preceding functions using data frame d.
+
+```{r message=FALSE}
+set.seed(123)
+d = data.frame(matrix(rnorm(1e6 * 10),ncol=10))
+d$cat = sample(LETTERS[1:5], 1e6, replace=TRUE)
+head(d,4)
+d <- d[,1:10]
+# n.d <- sub.d
+## Benchmark Check
+library(rbenchmark)
+for1 <- NULL; for2<- list(NA); for3 <- NULL
+apply.= function(D) 
+  apply(D, 1, max)
+lapply. = function(D)
+  lapply(D, max)
+vapply. = function(D)
+  vapply(t(D), max, 1)
+single.for.loop = function(D, D2=as.matrix(D), for1 = NULL)
+  for (i in 1:nrow(D2)) {
+    for1[i] = max(D2[i,])
+  }
+nested.for.loops = function(D, int, D2=as.matrix(D), for3 = NULL, for2 =list(NA))
+  for(j in seq(0, nrow(D2)-int, int)) {
+    min <- j+1; max <- j+int; s <- max/int
+    for2[[s]] <- as.matrix(D2[min:max,])
+    for(i in 1:int){
+      for3[i+j] <- max(for2[[s]][i,])
+    }
+  }
+bench.1 <- benchmark(replications=1,
+          apply.(d),
+          lapply.(d),
+          vapply.(d),
+          single.for.loop(d),
+          nested.for.loops(d, nrow(d)/100),
+          order = "relative")
+bench.1
+```
+
+***
+Which is the fastest, why do you think this is the case?
+
+> The fastest function is lapply. While one could likely write more efficient syntax for each of these functions that may change their benchmark rankings. The construction of lapply in this analysishas the fewest arguments, and therefor may provide fewer elements for R to read. 
+
+
+Construct a smaller subset of d by taking only the first 100 rows, rerun your benchmarks on this smaller subset, did anything change?
+
+```{r message=FALSE}
+sub.d <- d[1:100,]
+bench.2 <- benchmark(replications=1000,
+          apply.(sub.d),
+          lapply.(sub.d),
+          vapply.(sub.d),
+          single.for.loop(sub.d),
+          nested.for.loops(sub.d, nrow(sub.d)/100),
+          order = "relative")
+bench.2
+
+```
+
+> Lapply still appears to be the fastest. However the single for loop has moved from 5th to 3rd, and the double nested for loop has dropped from 4th to 5th. This may be due to the fact the nested for loops work but chopping the data up into sections of 100 rows--a superfluous step for analysis data with only 100 rows.
+
+***
+#### Exercise 1b
+##### Implement functions that find the median value for each of the 10 columns for each of the 5 category levels in the cat column using
+
+The tapply function
+A for loop
+Subsetting (no loops or applys)
+
+```{r message=FALSE}
+dt <- data.table(d)
+
+library(rbenchmark)
+
+for (i in 1:10) {
+  tapply(d[,i], d$cat, median)
+}
+tapply. = function(d)
+  apply(d[,-11], 2, function(x) tapply(x, d$cat, median))
+subset. = function(d)
+  d[,list(X1=median(d$X1),X2=median(d$X2), 
+          X3=median(d$X3),X4=median(d$X4),
+          X5=median(d$X5),X6=median(d$X6),
+          X7=median(d$X7),X8=median(d$X8),
+          X9=median(d$X9),X10=median(d$X10)),by=cat]
+
+bench.3 <- benchmark(replications=1,
+                     tapply.(d),
+                     forloop.(d),
+                     subset.(td))
+
+bench.3
+```
