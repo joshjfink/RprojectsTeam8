@@ -4,6 +4,7 @@ author: "Zheng Ding, Yanyu Liu, Joshua Fink"
 date: "September 12, 2014"
 output: html_document
 ---
+## Task 1 - Parse
 ```{r echo = TRUE}
 d = readLines("~cr173/Sta523/data/world_cup_goals_raw.txt")
 library(stringr)
@@ -107,4 +108,15 @@ style.left[1,] = style.leftRead[[1]][,2]
 
 Data = data.frame(ID = id, pig = pig, class = class, pid = pid, mid = mid, pname = pname, pteam = pteam, ptime = ptime, paddtime = paddtime, ptype = ptype, pteamimg = pteamimg, pmatch = pmatch, style.left = style.left, style.right = style.right)
 Data
+```
+
+
+## Task 3 - Translate
+```{r echo = TRUE}
+library(rjson)
+for (i in 1:193) {
+  cat(toJSON(Data[i,]))
+  i = i + 1
+}
+
 ```
