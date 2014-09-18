@@ -102,11 +102,18 @@ for (i in 2:193) {
 }
 
 #Match style.left
-style.leftRead = str_match_all(d, "top: ([0-9]*)px.")
+style.leftRead = str_match_all(d, "left: ([0-9]*)px;")
 style.left = matrix(NA, 193, 1, byrow = T)
 style.left[1,] = style.leftRead[[1]][,2] 
 
-Data = data.frame(ID = id, pig = pig, class = class, pid = pid, mid = mid, pname = pname, pteam = pteam, ptime = ptime, paddtime = paddtime, ptype = ptype, pteamimg = pteamimg, pmatch = pmatch, style.left = style.left, style.right = style.right)
+#Match style.top
+style.topRead = str_match_all(d, "top: ([0-9]*)px;")
+style.top = matrix(NA, 193, 1, byrow = T)
+for (i in 1:193) {
+  style.top[i,] = style.topRead[[i]][,2] 
+}
+
+Data = data.frame(ID = id, pig = pig, class = class, pid = pid, mid = mid, pname = pname, pteam = pteam, ptime = ptime, paddtime = paddtime, ptype = ptype, pteamimg = pteamimg, pmatch = pmatch, style.left = style.left, style.right = style.right,style.top = style.top)
 Data
 ```
 
