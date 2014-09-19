@@ -31,7 +31,8 @@ var hexbin = d3.hexbin()
 .size([width, height])
 .radius(22);
 var x = d3.scale.identity()
-.domain([0, width]);
+.domain([0, width])
+.range([width, 0]);;
 var y = d3.scale.identity()
 .domain([0, height])
 var xAxis = d3.svg.axis()
