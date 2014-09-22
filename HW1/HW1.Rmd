@@ -6,124 +6,93 @@ output: html_document
 ---
 ## Task 1 - Parse
 ```{r echo = TRUE}
+#build a NA matrix
+data = matrix(NA,nrow=193,ncol=14)
+colnames(data) = list("ID", "pig", "class", "pid", "mid", "pname", "pteam", "ptime", "paddtime", "ptype", "pteamimg", "pmatch", "style.right", "style.top")
+
+#read data
 d = readLines("~cr173/Sta523/data/world_cup_goals_raw.txt")
 library(stringr)
-d[1]
-t = d[1]
-#Match id
 idRead = str_match_all(d, " id=\"([a-z0-9]*)\"")
-id = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  id[i,] = idRead[[i]][,2] 
-}
-
-#Match pig
 pigRead = str_match_all(d, " pig=\"([0-9]*)\"")
-pig = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  pig[i,] = pigRead[[i]][,2] 
-}
-
-#Match class
 classRead = str_match_all(d, " class=\"([a-z ]*)\"")
-class = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  class[i,] = classRead[[i]][,2] 
-}
-
-#Match pid
 pidRead = str_match_all(d, " pid=\"([0-9]*)\"")
-pid = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  pid[i,] = pidRead[[i]][,2] 
-}
-
-#Match mid
 midRead = str_match_all(d, " mid=\"([0-9]*)\"")
-mid = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  mid[i,] = midRead[[i]][,2] 
-}
-
-#Match pname
 pnameRead = str_match_all(d, " pname=\"(.*)\" pteam=")
-pname = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  pname[i,] = pnameRead[[i]][,2] 
-}
-
-#Match pteam
 pteamRead = str_match_all(d, " pteam=\"(.*)\" ptime=")
-pteam = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  pteam[i,] = pteamRead[[i]][,2] 
-}
-
-#Match ptime
 ptimeRead = str_match_all(d, " ptime=\"([0-9 ]*)\"")
-ptime = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  ptime[i,] = ptimeRead[[i]][,2] 
-}
-
-#Match paddtime
 paddtimeRead = str_match_all(d, " paddtime=\"([0-9 ]*)\"")
-paddtime = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  paddtime[i,] = paddtimeRead[[i]][,2] 
-}
-
-#Match ptype
 ptypeRead = str_match_all(d, " ptype=\"(.*)\" pteamimg=")
-ptype = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  ptype[i,] = ptypeRead[[i]][,2] 
-}
-
-#Match pteamimg
 pteamimgRead = str_match_all(d, " pteamimg=\"([a-z/a-z.a-z ]*)\"")
-pteamimg = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  pteamimg[i,] = pteamimgRead[[i]][,2] 
-}
-
-#Match pmatch
 pmatchRead = str_match_all(d, " pmatch=\"(.*)\" style=")
-pmatch = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  pmatch[i,] = pmatchRead[[i]][,2] 
-}
-
-#Match style.right
-style.rightRead = str_match_all(d, "right: ([0-9]*)px;")
-style.right = matrix(NA, 193, 1, byrow = T)
-for (i in 2:193) {
-  style.right[i,] = style.rightRead[[i]][,2] 
-}
-
-#Match style.left
 style.leftRead = str_match_all(d, "left: ([0-9]*)px;")
-style.left = matrix(NA, 193, 1, byrow = T)
-style.left[1,] = style.leftRead[[1]][,2] 
+style.topRead = str_match_all(d, "top: ([0-9]*)px.")
+style.rightRead = str_match_all(d, "right: ([0-9]*)px;")
 
-#Match style.top
-style.topRead = str_match_all(d, "top: ([0-9]*)px;")
-style.top = matrix(NA, 193, 1, byrow = T)
-for (i in 1:193) {
-  style.top[i,] = style.topRead[[i]][,2] 
-}
+#combine left and right data; left is only available in the first row, so in the intergrated column, only 1st row records left data, and we will transform it to right later 
+style.rightRead[[1]] = style.leftRead[[1]]
 
-Data = data.frame(ID = id, pig = pig, class = class, pid = pid, mid = mid, pname = pname, pteam = pteam, ptime = ptime, paddtime = paddtime, ptype = ptype, pteamimg = pteamimg, pmatch = pmatch, style.left = style.left, style.right = style.right,style.top = style.top)
-Data
+#combine all data and pull data in the NA matrix
+Read = list(idRead, pigRead, classRead, pidRead, midRead, pnameRead, pteamRead, ptimeRead, paddtimeRead, ptypeRead, pteamimgRead, pmatchRead, style.rightRead, style.topRead)
+
+for (i in 1:14)
+  {
+  for (j in 1:193)
+    {
+    data[j,i] = Read[[i]][[j]][,2]
+    }
+  }
+
+#Based on that the first and the 30th row have the same style.top and their location in the visualization website (http://ejoh.se/worldcup2014/goals/), we think style.top measures the distance between shot location and top goal line. Similarly, style.right and style.left measure the distance between shot location and right or left touch line respectively. Besides, the first row (player name: Joel Matipand) and 84th row (player name: Mathieu Valbuena) should have the same style.right, based on the location of visualization website. So the whole length of goal line should be 1st style.left + 84th style.right = 990.
+#For convenience, we transformed the only style.left value (in the first row) to style.right (Before the transformation, style.right[1] in fact means style.left[1]) 
+
+data = data.frame(data)
+data$style.right = as.numeric(as.character(data$style.right))
+data$style.right[1] = 990 - data$style.right[1]
+
+#build final dataframe contained what we need: pig (where the ball entered the goal), mid (match number), pname (player), pteam (team), ptime (time), paddtime (time if goal in extra time), ptype (goal or penalty), style.right and style.left (shot location)
+Data = data.frame(data[,c(2,5,6,7,8,9,10,13,14)])
+
+#set type of each column
+data$ptime=as.numeric(data$ptime)
+data$paddtime=as.numeric(data$paddtime)
+data$style.top=as.numeric(data$style.top)
+str(data)
+```
+
+##Task 2 - visualization
+```{r}
+library(ggplot2)
+#plot1: When did goals of each team happen? It shows that each team tends to be more defensive or offensive in this World Cup 
+qplot(data$ptime, data$pteam,size=1.3,xlab="time",ylab="goals",main="Defensive or offensive team?",color=data$pteam)
+
+#plot2: Goals in each match. It shows the goals change over time, And we can find the excellence of this World Cup.
+match=as.numeric(as.character(data$mid))
+freq=hist(match,breaks=64,plot=FALSE)$counts#get the goals of each match
+match=data.frame(x=1:63,freq)
+
+p <- qplot(x=x,y=freq,data=match,geom="point",size=freq,color=freq,fill,main="Goals in each match",xlab="match",ylab="goals")
+p + scale_size_continuous(range = c(3,8))
+
 ```
 
 
 ## Task 3 - Translate
 ```{r echo = TRUE}
 library(rjson)
-for (i in 1:193) {
-  cat(toJSON(Data[i,]))
-  i = i + 1
-}
+library(jsonlite)
+
+#Select useful information and rename it
+data = subset(data,select=c(-class,-pid,-pteamimg,-pmatch))
+colnames(data) = c("goal_ID", "ball_location", "match_num", "player", "team_name", "time",	"time_extra",	"type",	"right", "top")
+  
+#We build a 3-layers struture for JSON. The first layer is match, the second one is team and the third one is goal. 
+datajson1 = split(subset(data,select=-match_num),data$match_num,drop=T)
+datajson2 = lapply(datajson1,FUN=function(r) split(subset(r,select=-team_name),r$team_name,drop=T))
+datajson3 = lapply(datajson2,FUN=function(r1) lapply(r1,FUN=function(r2)split(subset(r2,select=-goal_ID),r2$goal_ID,drop=T)))
+
+#transform the R objects to JSON format
+myjson <- toJSON(datajson3)
+prettify(myjson)
 
 ```
