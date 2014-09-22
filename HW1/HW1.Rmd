@@ -43,8 +43,9 @@ for (i in 1:14)
     }
   }
 
-#Based on that 1st and 30th row have the same style.top and their location in the visualization website (http://ejoh.se/worldcup2014/goals/), we think style.top measures the distance between shot location and top goal line. Similarly, style.right and style.left measure the distance between shot location and right or left touch line respectively. Besides, the 1st row (player name: Joel Matipand) and 84th row (player name: Mathieu Valbuena) should have the same style.right, based on the location of visualization website. So the whole length of goal line should be 1st style.left + 84th style.right = 990.
-#transform style.left to style.right in the 1st row (Before the transformation, style.right[1] in fact means style.left[1]) 
+#Based on that the first and the 30th row have the same style.top and their location in the visualization website (http://ejoh.se/worldcup2014/goals/), we think style.top measures the distance between shot location and top goal line. Similarly, style.right and style.left measure the distance between shot location and right or left touch line respectively. Besides, the first row (player name: Joel Matipand) and 84th row (player name: Mathieu Valbuena) should have the same style.right, based on the location of visualization website. So the whole length of goal line should be 1st style.left + 84th style.right = 990.
+#For convenience, we transformed the only style.left value (in the first row) to style.right (Before the transformation, style.right[1] in fact means style.left[1]) 
+
 data = data.frame(data)
 data$style.right = as.numeric(as.character(data$style.right))
 data$style.right[1] = 990 - data$style.right[1]
@@ -62,10 +63,10 @@ str(data)
 ##Task 2 - visualization
 ```{r}
 library(ggplot2)
-#plot1: When goals of each team happen? It shows that each team tends to be more defensive or offensive in this World Cup 
+#plot1: When did goals of each team happen? It shows that each team tends to be more defensive or offensive in this World Cup 
 qplot(data$ptime, data$pteam,size=1.3,xlab="time",ylab="goals",main="Defensive or offensive team?",color=data$pteam)
 
-#plot2:Goals in each match. It shows the goals change over time, And we can find the excellence of this World Cup.
+#plot2: Goals in each match. It shows the goals change over time, And we can find the excellence of this World Cup.
 match=as.numeric(as.character(data$mid))
 freq=hist(match,breaks=64,plot=FALSE)$counts#get the goals of each match
 match=data.frame(x=1:63,freq)
@@ -85,7 +86,7 @@ library(jsonlite)
 data = subset(data,select=c(-class,-pid,-pteamimg,-pmatch))
 colnames(data) = c("goal_ID", "ball_location", "match_num", "player", "team_name", "time",	"time_extra",	"type",	"right", "top")
   
-#we build 3-layers struture. The first layer is match, the second one is team and the third one is goal. 
+#We build 3-layers struture. The first layer is match, the second one is team and the third one is goal. 
 datajson1 = split(subset(data,select=-match_num),data$match_num,drop=T)
 datajson2 = lapply(datajson1,FUN=function(r) split(subset(r,select=-team_name),r$team_name,drop=T))
 datajson3 = lapply(datajson2,FUN=function(r1) lapply(r1,FUN=function(r2)split(subset(r2,select=-goal_ID),r2$goal_ID,drop=T)))
