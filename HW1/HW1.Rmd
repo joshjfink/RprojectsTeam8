@@ -82,11 +82,11 @@ p + scale_size_continuous(range = c(3,8))
 library(rjson)
 library(jsonlite)
 
-#select useful information and rename them
+#Select useful information and rename it
 data = subset(data,select=c(-class,-pid,-pteamimg,-pmatch))
 colnames(data) = c("goal_ID", "ball_location", "match_num", "player", "team_name", "time",	"time_extra",	"type",	"right", "top")
   
-#We build 3-layers struture. The first layer is match, the second one is team and the third one is goal. 
+#We build a 3-layers struture for JSON. The first layer is match, the second one is team and the third one is goal. 
 datajson1 = split(subset(data,select=-match_num),data$match_num,drop=T)
 datajson2 = lapply(datajson1,FUN=function(r) split(subset(r,select=-team_name),r$team_name,drop=T))
 datajson3 = lapply(datajson2,FUN=function(r1) lapply(r1,FUN=function(r2)split(subset(r2,select=-goal_ID),r2$goal_ID,drop=T)))
