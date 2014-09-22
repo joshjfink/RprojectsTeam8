@@ -45,8 +45,9 @@ for (i in 1:14)
 
 #Based on that 1st and 30th row have the same style.top and their location in the visualization website (http://ejoh.se/worldcup2014/goals/), we think style.top measures the distance between shot location and top goal line. Similarly, style.right and style.left measure the distance between shot location and right or left touch line respectively. Besides, the 1st row (player name: Joel Matipand) and 84th row (player name: Mathieu Valbuena) should have the same style.right, based on the location of visualization website. So the whole length of goal line should be 1st style.left + 84th style.right = 990.
 #transform style.left to style.right in the 1st row (Before the transformation, style.right[1] in fact means style.left[1]) 
-data[,13:14] = as.numeric(unlist(data[,13:14]))
-data[1,13] = 990 - data[1,13]
+data = data.frame(data)
+data$style.right = as.numeric(as.character(data$style.right))
+data$style.right[1] = 990 - data$style.right[1]
 
 #build final dataframe contained what we need: pig (where the ball entered the goal), mid (match number), pname (player), pteam (team), ptime (time), paddtime (time if goal in extra time), ptype (goal or penalty), style.right and style.left (shot location)
 Data = data.frame(data[,c(2,5,6,7,8,9,10,13,14)])
@@ -54,6 +55,7 @@ Data = data.frame(data[,c(2,5,6,7,8,9,10,13,14)])
 #set type of each column
 data$ptime=as.numeric(data$ptime)
 data$paddtime=as.numeric(data$paddtime)
+data$style.top=as.numeric(data$style.top)
 str(data)
 ```
 
@@ -61,8 +63,19 @@ str(data)
 ## Task 3 - Translate
 ```{r echo = TRUE}
 library(rjson)
-for (i in 1:193) {
-  cat(toJSON(Data[i,]))
-  i = i + 1
-}
+library(jsonlite)
+
+#select useful information and rename them
+data = subset(data,select=c(-class,-pid,-pteamimg,-pmatch))
+colnames(data) = c("goal_ID", "ball_location", "match_num", "player", "team_name", "time",	"time_extra",	"type",	"right", "top")
+  
+#we build 3-layers struture. The first layer is match, the second one is team and the third one is goal. 
+datajson1 = split(subset(data,select=-match_num),data$match_num,drop=T)
+datajson2 = lapply(datajson1,FUN=function(r) split(subset(r,select=-team_name),r$team_name,drop=T))
+datajson3 = lapply(datajson2,FUN=function(r1) lapply(r1,FUN=function(r2)split(subset(r2,select=-goal_ID),r2$goal_ID,drop=T)))
+
+#transform the R objects to JSON format
+myjson <- toJSON(datajson3)
+prettify(myjson)
+
 ```
