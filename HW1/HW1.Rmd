@@ -59,6 +59,22 @@ data$style.top=as.numeric(data$style.top)
 str(data)
 ```
 
+##Task 2 - visualization
+```{r}
+library(ggplot2)
+#plot1: When goals of each team happen? It shows that each team tends to be more defensive or offensive in this World Cup 
+qplot(data$ptime, data$pteam,size=1.3,xlab="time",ylab="goals",main="Defensive or offensive team?",color=data$pteam)
+
+#plot2:Goals in each match. It shows the goals change over time, And we can find the excellence of this World Cup.
+match=as.numeric(as.character(data$mid))
+freq=hist(match,breaks=64,plot=FALSE)$counts#get the goals of each match
+match=data.frame(x=1:63,freq)
+
+p <- qplot(x=x,y=freq,data=match,geom="point",size=freq,color=freq,fill,main="Goals in each match",xlab="match",ylab="goals")
+p + scale_size_continuous(range = c(3,8))
+
+```
+
 
 ## Task 3 - Translate
 ```{r echo = TRUE}
