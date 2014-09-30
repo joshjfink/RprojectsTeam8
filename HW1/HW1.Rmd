@@ -4,7 +4,9 @@ author: "Zheng Ding, Yanyu Liu, Joshua Fink"
 date: "September 12, 2014"
 output: html_document
 ---
+
 ## Task 1 - Parse
+
 ```{r echo = TRUE}
 #build a NA matrix
 data = matrix(NA,nrow=193,ncol=14)
@@ -28,29 +30,41 @@ pmatchRead = str_match_all(d, " pmatch=\"(.*)\" style=")
 style.leftRead = str_match_all(d, "left: ([0-9]*)px;")
 style.topRead = str_match_all(d, "top: ([0-9]*)px.")
 style.rightRead = str_match_all(d, "right: ([0-9]*)px;")
+```
 
-#combine left and right data; left is only available in the first row, so in the intergrated column, only 1st row records left data, and we will transform it to right later 
+Combine left and right data; left is only available in the first row, so in the intergrated column, only 1st row records left data, and we will transform it to right later 
+
+```{r}
 style.rightRead[[1]] = style.leftRead[[1]]
+```
 
-#combine all data and pull data in the NA matrix
+combine all data and pull data in the `NA` matrix
+
+```{r}
 Read = list(idRead, pigRead, classRead, pidRead, midRead, pnameRead, pteamRead, ptimeRead, paddtimeRead, ptypeRead, pteamimgRead, pmatchRead, style.rightRead, style.topRead)
 
 for (i in 1:14)
-  {
+{
   for (j in 1:193)
-    {
+  {
     data[j,i] = Read[[i]][[j]][,2]
-    }
   }
+}
+```
 
-#Based on that the first and the 30th row have the same style.top and their location in the visualization website (http://ejoh.se/worldcup2014/goals/), we think style.top measures the distance between shot location and top goal line. Similarly, style.right and style.left measure the distance between shot location and right or left touch line respectively. Besides, the first row (player name: Joel Matipand) and 84th row (player name: Mathieu Valbuena) should have the same style.right, based on the location of visualization website. So the whole length of goal line should be 1st style.left + 84th style.right = 990.
-#For convenience, we transformed the only style.left value (in the first row) to style.right (Before the transformation, style.right[1] in fact means style.left[1]) 
+Based on that the first and the 30th row have the same style.top and their location in the visualization website (http://ejoh.se/worldcup2014/goals/), we think style.top measures the distance between shot location and top goal line. Similarly, style.right and style.left measure the distance between shot location and right or left touch line respectively. Besides, the first row (player name: Joel Matipand) and 84th row (player name: Mathieu Valbuena) should have the same style.right, based on the location of visualization website. So the whole length of goal line should be 1st style.left + 84th style.right = 990.
 
+For convenience, we transformed the only style.left value (in the first row) to style.right (Before the transformation, style.right[1] in fact means style.left[1]) 
+
+```{r}
 data = data.frame(data)
 data$style.right = as.numeric(as.character(data$style.right))
 data$style.right[1] = 990 - data$style.right[1]
+```
 
-#build final dataframe contained what we need: pig (where the ball entered the goal), mid (match number), pname (player), pteam (team), ptime (time), paddtime (time if goal in extra time), ptype (goal or penalty), style.right and style.left (shot location)
+Build final dataframe contained what we need: pig (where the ball entered the goal), mid (match number), pname (player), pteam (team), ptime (time), paddtime (time if goal in extra time), ptype (goal or penalty), style.right and style.left (shot location)
+
+```{r}
 Data = data.frame(data[,c(2,5,6,7,8,9,10,13,14)])
 
 #set type of each column
