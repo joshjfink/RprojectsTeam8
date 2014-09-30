@@ -93,8 +93,8 @@ p + scale_size_continuous(range = c(3,8))
 
 ## Task 3 - Translate
 ```{r echo = TRUE}
-library(rjson)
-library(jsonlite)
+library(rjson, quietly=TRUE, warn.conflicts=FALSE)
+library(jsonlite, quietly=TRUE, warn.conflicts=FALSE)
 
 #Select useful information and rename it
 data = subset(data,select=c(-class,-pid,-pteamimg,-pmatch))
