@@ -7,3 +7,7 @@
 # R data files from past sessions
 .Rdata
 .Rproj.user
+
+HW1/HW1.html
+
+.DS_Store
