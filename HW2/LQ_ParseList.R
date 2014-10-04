@@ -8,8 +8,7 @@ check_packages = function(names)
         library(name, character.only=TRUE)
     }
 }
-
-library("httr"); library(stringr)
+check_packages(c("httr", "stringr"))
 d = data.frame(name= "La Quinta Inn & Suites Flagstaff",
                url = "http://www.lq.com/en/findandbook/hotel-details.flagstaff.address.html",
                stringsAsFactors = FALSE)
