@@ -12,6 +12,6 @@ for (n in 1:50){
   state = AllStates[n]
   url = paste(urlHead, state, urlTail, sep = "")
   st = GET(url)
-  fileName = paste("Dennys_",state,".xml",sep = "")
+  fileName = paste("dennys/",state,".xml",sep = "")
   write(content(st, as="text"), file = fileName)
 }
