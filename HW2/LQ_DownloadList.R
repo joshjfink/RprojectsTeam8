@@ -1,17 +1,6 @@
-# Check Packages Function
-check_packages = function(names)
-{
-    for(name in names)
-    {
-        if (!(name %in% installed.packages()))
-            install.packages(name, repos="http://cran.us.r-project.org")
-    
-        library(name, character.only=TRUE)
-    }
-}
-
-# Load Required Packages
-check_packages(c("httr"))
+# Load Required packages
+source("check_packages.R")
+check_packages(c("httr", "stringr"))
 
 # Define URL
 url = "http://www.lq.com/en/findandbook/hotel-listings.html"
@@ -24,3 +13,6 @@ dir.create("lq/", showWarnings = FALSE)
 
 # Write List File
 write(s, file="lq/list.html")
+
+
+	
