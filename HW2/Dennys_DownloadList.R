@@ -1,6 +1,5 @@
 # Load Required packages
-source("check_packages.R")
-check_packages(c("httr"))
+library(httr)
 
 dir.create("dennys/", showWarnings = FALSE)
 AllStates = c(state.abb) #All 50 states
@@ -13,8 +12,6 @@ for (n in 1:50){
   state = AllStates[n]
   url = paste(urlHead, state, urlTail, sep = "")
   st = GET(url)
-  fileName = paste("st",STATE,".xml",sep = "")
+  fileName = paste("Dennys_",state,".xml",sep = "")
+  write(content(st, as="text"), file = fileName)
 }
-
-write(dc, file="dennys/dc.html")
-write(slc, file="dennys/slc.html")
