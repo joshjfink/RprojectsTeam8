@@ -21,4 +21,4 @@ save(dennys, file="dennys/dennys_data.Rdata")
 
 # We pulled 1000 locations from each state, did it for all 50 states. For result, we have a total number ~50k locations. 
 # However after we remove the duplicate rows. It's only 1698 locations left. We think the method pull all states is very inefficient. 
-# If we have time to redo it for this specific case, it would be better just pull a few states. But the risk is missing some locations.
+# If we have time to redo it for this specific case, it would be better just pull a few states, but the risk is missing some locations.
