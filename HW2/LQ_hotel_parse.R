@@ -23,7 +23,6 @@ name <- sapply(f, function(x){
   as.character(unlist(xmlToDataFrame(html_nodes(html(x),"h3")))[1])
 })
 
-
 # Lattitude and Longitude
 lat_lon <- sapply(f, function(x){
 	a <- readLines(x)
