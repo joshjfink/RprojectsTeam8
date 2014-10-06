@@ -18,6 +18,12 @@ for(i in 1:length(contact)){
 	fax[i] <- ifelse(class(contact[[i]]) =="character", "NA", contact[[i]][,5])
 }
 
+# hotel name
+name <- sapply(f, function(x){
+  as.character(unlist(xmlToDataFrame(html_nodes(html(x),"h3")))[1])
+})
+
+
 # Lattitude and Longitude
 lat_lon <- sapply(f, function(x){
 	a <- readLines(x)
@@ -31,9 +37,8 @@ for (i in 1:length(contact))
 }
 
 #combine hotel data
-hotel_data <- cbind(add1,add2,phone,fax,lat_lon_mat[,1],lat_lon_mat[,2])
-colnames(hotel_data) <- c("address1","address2","phone","fax","latitude","longitude")
+hotel_data <- cbind(add1,add2,phone,fax,lat_lon_mat[,1],lat_lon_mat[,2],name)
+colnames(hotel_data) <- c("address1","address2","phone","fax","latitude","longitude","hotel name")
 
 # Save results as Rdata file
 save(hotel_data, file="lq/hotel data.Rdata")
-
