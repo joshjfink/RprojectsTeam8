@@ -1,0 +1,49 @@
+---
+title: "La Quinta and Dennys"
+author: "team 8"
+date: "10/5/2014"
+output: html_document
+---
+Vasualization
+--------------------------------------------------------------------------
+Haversine
+formula:  a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
+c = 2 ⋅ atan2( √a, √(1−a) )
+d = R ⋅ c
+where	φ is latitude, λ is longitude, R is earth’s radius (mean radius = 6,371km);
+note that angles need to be in radians to pass to trig functions!
+```{r1}
+load(file="lq/hotel data.Rdata")
+load(file="dennys/dennys_data.Rdata")
+
+source("check_packages.R")
+check_packages(c("maps", "mapdata","fields"))
+
+# get the longitude and latitude information
+lq_lat = as.numeric(hotel_data[,5])
+lq_lon = as.numeric(hotel_data[,6])
+de_lat = as.numeric(as.character(dennys$latitude))
+de_lon = as.numeric(as.character(dennys$longitude))
+
+
+map("state", interior = FALSE)
+map("state", boundary = FALSE, col="gray", add = TRUE)
+points(lq_lon,lq_lat, col = "blue", pch = 1.2)
+points(de_lon,de_lat, col = "red", pch = 1.2)
+title(main = "Vasualization")
+```
+
+Distance Analysis
+--------------------------------------------------------------
+We calculate the distance blah blah blah...
+```{r2}
+distance = rdist.earth(cbind(de_lon,de_lat),cbind(lq_lon,lq_lat))
+a = colMins(distance)
+lq.min = apply(distance,2,which.min)
+de.min = apply(distance,1,which.min)
+```
+
+### Denny's Data
+
+```{r}
+```
