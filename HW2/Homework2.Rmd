@@ -4,8 +4,9 @@ author: "team 8"
 date: "10/5/2014"
 output: html_document
 ---
-Vasualization
---------------------------------------------------------------------------
+### Visualization
+***
+This basic visualization gives one some ideas of what the macro-level patterns of La Quinta and Denny's locations look like. It does appear there is some correlation--although admittedly some of this is simply due to overall urbanization and the clustering of businesses in major cities.
 
 ```{r1}
 load(file="lq/hotel data.Rdata")
@@ -25,13 +26,14 @@ map("state", interior = FALSE)
 map("state", boundary = FALSE, col="gray", add = TRUE)
 points(lq_lon,lq_lat, col = "blue", pch = 1.2)
 points(de_lon,de_lat, col = "red", pch = 1.2)
-title(main = "Vasualization")
+title(main = "Map of US La Quinta and Denny's Locations")
 ```
 
-Distance Analysis
---------------------------------------------------------------
-We calculate the distance and found we have 48 La Quintas next to Denny's, which is very high.
-```{r2}
+### Distance Analysis
+***
+Here  we perform basic calculations to summarize information on the distance between La Quinta and Denny's locations. Using 150 meters as a maximum threshold deinfing close proximity, we find 48 La Quinta locations next to Denny's, which many would consider quite high.
+
+```{r2, }
 # a distance matrix
 distance = rdist.earth(cbind(de_lon,de_lat),cbind(lq_lon,lq_lat))
 
@@ -40,15 +42,12 @@ MIN = function(x) c(which.min(x),min(x))
 lq.min = apply(distance,2,MIN)
 de.min = apply(distance,1,MIN)
 
-#if the distance is smaller than 150 meters (= 0.0932057 mile), it should be think as "next to"
-count = 0;
-for (i in 1:856)
-if(lq.min[2,i]<0.0932057) count = count + 1
+#if the distance is smaller than 150 meters (= 0.0932057 mile), it should be thought of as "next to"
+count = 0
+dmin <- lq.min[2,]
+for (i in 1:length(dmin)){
+if(dmin[i] <0.0932057) count = count + 1
+}
 print(count)
 
-```
-
-### Denny's Data
-
-```{r}
 ```
