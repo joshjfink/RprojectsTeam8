@@ -6,12 +6,7 @@ output: html_document
 ---
 Vasualization
 --------------------------------------------------------------------------
-Haversine
-formula:  a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
-c = 2 ⋅ atan2( √a, √(1−a) )
-d = R ⋅ c
-where	φ is latitude, λ is longitude, R is earth’s radius (mean radius = 6,371km);
-note that angles need to be in radians to pass to trig functions!
+
 ```{r1}
 load(file="lq/hotel data.Rdata")
 load(file="dennys/dennys_data.Rdata")
@@ -35,12 +30,22 @@ title(main = "Vasualization")
 
 Distance Analysis
 --------------------------------------------------------------
-We calculate the distance blah blah blah...
+We calculate the distance and found we have 48 La Quintas next to Denny's, which is very high.
 ```{r2}
+# a distance matrix
 distance = rdist.earth(cbind(de_lon,de_lat),cbind(lq_lon,lq_lat))
-a = colMins(distance)
-lq.min = apply(distance,2,which.min)
-de.min = apply(distance,1,which.min)
+
+#calculate the closest hotel for each Denny's and the cloest Denny's for each hotel
+MIN = function(x) c(which.min(x),min(x))
+lq.min = apply(distance,2,MIN)
+de.min = apply(distance,1,MIN)
+
+#if the distance is smaller than 150 meters (= 0.0932057 mile), it should be think as "next to"
+count = 0;
+for (i in 1:856)
+if(lq.min[2,i]<0.0932057) count = count + 1
+print(count)
+
 ```
 
 ### Denny's Data
