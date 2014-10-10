@@ -1,5 +1,5 @@
 source("check_packages.R")
-check_packages(c("httr", "stringr"))
+check_packages(c("httr", "rvest","stringr","XML","htmltools"))
 
 # Create list of files
 f <- list.files(path="lq/hotels", pattern="*.html", full.names=T, recursive=FALSE)

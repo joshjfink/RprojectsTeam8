@@ -1,5 +1,5 @@
 source("check_packages.R")
-check_packages(c("httr", "stringr"))
+check_packages(c("httr", "stringr","XML"))
 
 # Load list
 load(file="lq/list.Rdata")

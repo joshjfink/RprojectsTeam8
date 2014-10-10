@@ -1,7 +1,7 @@
 # Do parsing stuff
-#
-library(XML)
-library(RCurl)
+source("check_packages.R")
+check_packages(c("XML", "RCurl"))
+
 
 AllStates = c(state.abb) #All 50 states
 # Create an empty data frame
