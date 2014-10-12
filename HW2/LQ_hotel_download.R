@@ -7,7 +7,7 @@ load(file="lq/list.Rdata")
 dir.create("lq/hotels/", showWarnings = FALSE)
 
 # Loop over hotels and download their pages (html's already in directory)
-for(i in 1:100)   #length(link)
+for(i in 1:length(link))  
 {
     url = link[i]
     page = GET(url)

@@ -11,7 +11,7 @@ dennys = data.frame(matrix(vector(), 0, 13, dimnames=list(c(), c("name","address
 # However after we remove the duplicate rows. It's only 1698 locations left. We think the method pull all states is very inefficient. 
 # If we have time to redo it for this specific case, it would be better just pull a few states, but the risk is missing some locations.
 
-for (n in 1:3){
+for (n in 1:50){
   state = AllStates[n]
   fileName = paste("dennys/",state,".html",sep = "")
   doc <- xmlParse(fileName)

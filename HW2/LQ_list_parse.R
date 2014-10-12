@@ -1,5 +1,10 @@
 # Do parsing stuff
 
+source("check_packages.R")
+check_packages(c("httr", "rvest","stringr","XML","htmltools"))
+
+load(file="lq/list.html")
+
 # get hotel name and link
 Name = str_match_all(s, "html\">([A-Za-z0-9'\\() /&\\.-]*)</a><br>\r\n")
 link = str_match_all(s, "<a href=\"([a-z0-9 \\/\\.-]*)\">La Quinta")
