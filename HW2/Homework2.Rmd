@@ -9,7 +9,7 @@ output: html_document
 This basic visualization gives one some ideas of what the macro-level patterns of La Quinta and Denny's locations look like. It does appear there is some correlation--although admittedly some of this is simply due to overall urbanization and the clustering of businesses in major cities.
 
 ```{r1}
-load(file="lq/hotel data.Rdata")
+load(file="lq/hotel_data.Rdata")
 load(file="dennys/dennys_data.Rdata")
 
 source("check_packages.R")
