@@ -4,11 +4,11 @@ author: "team 8"
 date: "10/5/2014"
 output: html_document
 ---
-### Visualization
+### Visualization 1
 ***
 This basic visualization gives one some ideas of what the macro-level patterns of La Quinta and Denny's locations look like. It does appear there is some correlation--although admittedly some of this is simply due to overall urbanization and the clustering of businesses in major cities.
 
-```{r1}
+```{r1, message=FALSE, warning=FALSE}
 load(file="lq/hotel_data.Rdata")
 load(file="dennys/dennys_data.Rdata")
 
@@ -33,7 +33,7 @@ title(main = "Map of US La Quinta and Denny's Locations")
 ***
 Here  we perform basic calculations to summarize information on the distance between La Quinta and Denny's locations. Using 150 meters as a maximum threshold deinfing close proximity, we find 48 La Quinta locations next to Denny's, which many would consider quite high.
 
-```{r2, }
+```{r2, message=FALSE, warning=FALSE}
 # a distance matrix
 distance = rdist.earth(cbind(de_lon,de_lat),cbind(lq_lon,lq_lat))
 
@@ -51,3 +51,61 @@ if(dmin[i] <0.0932057) count = count + 1
 print(count)
 
 ```
+
+### Visualization 2
+
+Analyzing the average proximity of these two businesses accross the entire U.S. in a figure can be difficult. To zoom in on a more tractable frame of analysis, it may be useful to select a subset of states to examine geographic patterns in the locations of these businesses more closely. Many of the Denny's and La Quinta establishments are located in the Southwest--so the figure below examines specifically this region. It does appear from this figure that in the southwest, Denny's and LaQuinta locations are correlated. 
+
+```{r3, message=FALSE, warning=FALSE}
+load(file="lq/hotel_data.Rdata")
+load(file="dennys/dennys_data.Rdata")
+
+source("check_packages.R")
+check_packages(c("maps", "mapdata","fields", "stringr", "ggplot2"))
+
+
+lqstate <- str_match_all(hotel_data[,2], ", ([A-Z][A-Z]) ")
+
+lqst <- NULL
+for(i in 1:856){
+	lqst[i] <- ifelse(class(lqstate[[i]]) =="character", "NA", lqstate[[i]][,2])
+}
+
+testlq <- data.frame(lat=as.numeric(hotel_data[,5]), long=as.numeric(hotel_data[,6]),Establishment="La Quinta", state=lqst)
+
+testlq <- testlq[testlq$state=="CA" |testlq$state== "AZ" | testlq$state=="NM" |testlq$state=="TX",]
+
+data.lq <- subset(testlq, subset=(long >= -180 & lat >= -90))
+data.lq$X <- floor(data.lq$long)
+data.lq$Y <- floor(data.lq$lat)
+data.lq$Cell <- data.lq$X + 360 * data.lq$Y
+dennys <- dennys[dennys$state=="CA" |dennys$state== "AZ" | dennys$state=="NM" |dennys$state=="TX",]
+
+testdn <- data.frame(lat=as.numeric(as.character(dennys$latitude)), long=as.numeric(as.character(dennys$longitude)),Establishment="Denny's")
+data.dn <- subset(testdn, subset=(long >= -180 & lat >= -90))
+data.dn$X <- floor(data.dn$long)
+data.dn$Y <- floor(data.dn$lat)
+data.dn$Cell <- data.dn$X + 360 * data.dn$Y
+
+lql <- length(by(data.lq, data.lq$Cell, function(d) c(d$X[1], d$Y[1], nrow(d))))
+dnl <- length(by(data.dn, data.dn$Cell, function(d) c(d$X[1], d$Y[1], nrow(d))))
+
+counts=c(by(data.lq, data.lq$Cell, function(d) c(d$X[1], d$Y[1], nrow(d))),by(data.dn, data.dn$Cell, function(d) c(d$X[1], d$Y[1], nrow(d))))
+counts.m <- matrix(unlist(counts), nrow=3)
+counts.m <- data.frame(t(counts.m))
+counts.m$Establishment=(c(rep("La Quinta", lql), rep("Denny's", dnl)))
+colnames(counts.m) <- c("X", "Y", "Count", "Establishment")
+
+all_states <- map_data("state")
+states <- subset(all_states, region %in% c( "california", "arizona", "new mexico", "texas" ) )
+#plot all states with ggplot
+
+p <- ggplot()
+
+p <- p + geom_polygon( data=states, aes(x=long, y=lat, group = group),colour="white", fill="grey10" )
+p <- p + geom_point( data=counts.m, aes(x=X, y=Y, size = Count), color="coral1") + scale_size(name="# of Locations")
+p <- p + geom_jitter( data=counts.m, position=position_jitter(width=0.5, height=0.5), aes(x=X, y=Y, size = Count,color=Establishment)) 
+p + theme_bw()
+```
+
+
