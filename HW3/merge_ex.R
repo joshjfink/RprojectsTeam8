@@ -5,6 +5,7 @@ library(rgeos)
 
 base = '/home/vis/cr173/Sta523/data/parking'
 
+#still has some merge problem between different R file, so firstly, we will read file separately.
 park = tbl_df(read.csv(paste0(base,"/NYParkingViolations_small.csv"), stringsAsFactors=FALSE))
 
 addr = filter(park, Violation.Precinct <= 34) %>%
