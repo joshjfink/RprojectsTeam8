@@ -1,6 +1,6 @@
 setwd("/Users/Josh/Desktop/Universe/Computation/GitHub/HW3")
 source("check_packages.R")
-check_packages(c("dplyr", "data.table", "tidyr", "stringr", "rgdal", "rgeos", "httr", "rjson", "RDSTK"))
+check_packages(c("dplyr", "date", "data.table", "tidyr", "stringr", "rgdal", "rgeos", "httr", "rjson", "RDSTK"))
 
 #only use 1/10 data to run to save time
 dm = read.csv("/home/vis/cr173/Sta523/data/parking/NYParkingViolations_small.csv",
