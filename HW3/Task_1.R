@@ -1,10 +1,7 @@
 
 source("check_packages.R")
-<<<<<<< HEAD
+
 check_packages(c("dplyr", "data.table", "tidyr", "stringr", "rgdal", "rgeos", "httr", "rjson", "RDSTK", "date", "lubridate"))
-=======
-check_packages(c("dplyr", "date", "data.table", "tidyr", "stringr", "rgdal", "rgeos", "httr", "rjson", "RDSTK"))
->>>>>>> 865294f87bc74af42a1ca23357cd1273be8e8abf
 
 #subset data
 dat.master = tbl_df(read.csv("/home/vis/cr173/Sta523/data/parking/NYParkingViolations_small.csv",stringsAsFactors=FALSE))
