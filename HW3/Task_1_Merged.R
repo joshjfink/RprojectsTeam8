@@ -4,6 +4,7 @@ check_packages(c("devtools", "data.table", "tidyr", "stringr", "rgdal", "rgeos",
 
 # Install updated devtools from GitHub repo to prevent crash
 devtools::install_github("hadley/dplyr")
+require(dplyr)
 
 # Read in data
 dat.master = tbl_df(read.csv("/home/vis/cr173/Sta523/data/parking/NYParkingViolations.csv",stringsAsFactors=FALSE))
