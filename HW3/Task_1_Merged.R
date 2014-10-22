@@ -1,6 +1,6 @@
 # Setup
 source("check_packages.R")
-check_packages(c("devtools", "data.table", "tidyr", "stringr", "rgdal", "rgeos", "httr", "rjson", "RDSTK", "date", "lubridate", "Rcpp"))
+check_packages(c("devtools", "data.table", "tidyr", "stringr", "rgdal", "rgeos", "httr", "rjson", "RDSTK", "date", "lubridate", "Rcpp","sp"))
 
 # Install updated devtools from GitHub repo to prevent crash
 devtools::install_github("hadley/dplyr")
@@ -35,3 +35,29 @@ tax = cbind(data.frame(pt@coords), as.character(pl@data$Address))
 names(tax)[3] = "addr"
 
 z = inner_join(addr, tax)
+
+#############task 2###############
+
+#build suitable data frame
+z1 = as.matrix(data.table(z[,2:4],key = "Violation.Precinct"))
+rownames(z1) = as.matrix(z1[,1])
+z1 = z1[,-1]
+
+#build convex hull for each precinct
+spt = SpatialPoints(z1)
+spoly = gConvexHull(spt,byid = TRUE)
+
+#transform it to SpatialPolygonsDataFrame
+data = data.frame(precinct = sapply(spoly@polygons, function(x) x@ID),stringsAsFactors=FALSE)
+spoly = SpatialPolygonsDataFrame(spoly, data, match.ID=FALSE)
+
+writeOGR(spoly, "./out", "", driver="GeoJSON") # Creates out file, current version of 
+
+#rename the file afterwards
+file.rename("./out", "./precinct.json")
+
+
+# alpha affects alpha blending (makes things transparent), useful if polys may overlap
+plot(spoly,main = "precinct.json", axes=TRUE, col=adjustcolor(2:6,alpha=0.5))
+
+dev.off()
