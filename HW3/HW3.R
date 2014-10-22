@@ -6,7 +6,9 @@ source("check_packages.R")
 check_packages(c("devtools", "data.table", "tidyr", "stringr", "rgdal", "rgeos", "httr", "rjson", "RDSTK", "date", "lubridate", "Rcpp","sp"))
 
 # Install updated devtools from GitHub repo to prevent crash
-devtools::install_github("hadley/dplyr")
+if (packageVersion("dplyr") < 0.3) {
+  devtools::install_github("hadley/dplyr")
+}
 require(dplyr)
 
 ################################
