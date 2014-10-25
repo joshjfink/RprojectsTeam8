@@ -3,7 +3,8 @@
 ###############################
 # Load packages
 source("check_packages.R")
-check_packages(c("devtools", "data.table", "tidyr", "stringr", "rgdal", "rgeos", "httr", "rjson", "RDSTK", "date", "lubridate", "Rcpp","sp"))
+check_packages(c("devtools", "data.table", "tidyr", "stringr", "rgdal", "rgeos", "httr", "rjson", "RDSTK", "date", "lubridate", "Rcpp","sp", "mvoutlier"))
+
 
 # Install updated devtools from GitHub repo to prevent crash
 if (packageVersion("dplyr") < 0.3) {
@@ -15,6 +16,7 @@ require(dplyr)
 ############ Task 1 ############
 ################################
 # Read in data
+### This read in small data for sake of testing
 dat.master = tbl_df(read.csv("/home/vis/cr173/Sta523/data/parking/NYParkingViolations.csv",stringsAsFactors=FALSE))
 
 #choose right issue date & correct precincts
@@ -41,8 +43,16 @@ pl = readOGR(paste0(base,"/pluto/Manhattan/"),"MNMapPLUTO")
 pt = gCentroid(pl,byid=TRUE)
 tax = cbind(data.frame(pt@coords), as.character(pl@data$Address))
 names(tax)[3] = "addr"
-
 z = inner_join(addr, tax)
+
+
+#### Remove outliers using mvoutlier package
+outs <-  na.omit(data.matrix(z[,2:4]))
+x.out=sign2(outs,makeplot=FALSE)
+summary(x.out)
+addr2 <- tbl_df(cbind(data.frame(Out=x.out$wfinal01), outs))
+addr <- filter(addr2, Out==1) %>%
+            select(Violation.Precinct, x, y)
 
 
 ################################
