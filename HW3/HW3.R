@@ -7,7 +7,7 @@ check_packages(c("devtools", "data.table", "tidyr", "stringr", "rgdal", "rgeos",
 
 
 # Install updated devtools from GitHub repo to prevent crash
-if (packageVersion("dplyr") < 0.3) {
+if (compareVersion(toString(packageVersion("dplyr")), "0.3.0.9000") == -1) {
   devtools::install_github("hadley/dplyr")
 }
 require(dplyr)
