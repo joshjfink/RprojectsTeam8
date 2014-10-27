@@ -80,14 +80,12 @@ addr <- select(addr2, Violation.Precinct, x, y)
 ```{r, message=FALSE}
 #SVM
 k=svm(as.factor(Violation.Precinct)~.,data=addr,cross=5)
-plot(k,data=s)
 
 nybb = readOGR(path.expand("/home/vis/cr173/Sta523/data/parking/nybb/"),"nybb",stringsAsFactors=FALSE)
 manh = nybb[2,]
 
 library(raster)
 r = rasterize(manh, raster(ncols=500,nrows=1000,ext=extent(bbox(manh))))
-
 
 cells = which(!is.na(r[]))
 crds = xyFromCell(r,cells)
@@ -97,6 +95,8 @@ z = predict(k,crds)
 r[cells] = as.numeric(as.character(z))
 
 dist = sort(unique(addr$Violation.Precinct))
+index=which(!(dist %in% r[]))
+dist = dist[-index]
 
 l=list()
 for(i in seq_along(dist))
@@ -109,14 +109,14 @@ for(i in seq_along(dist))
 
 pd = do.call(rbind, l)
 
+
+
 writeOGR(pd, "./out", "", driver="GeoJSON")
 file.rename("./out", "./precinct_svm.json")
 
 
 # alpha affects alpha blending (makes things transparent), useful if polys may overlap
 plot(pd,main = "precinct_svm.json", axes=TRUE, col=adjustcolor(2:6,alpha=0.5))
-
-dev.off()
 ```
 
 > For task 2--the drawing of police precinct boundaries--we use svm to create a supervised learning framework for mapping our violation data to a map of NYC. With incorrectly coded data removed and enough data points along boarder of each precinct this should provide a good approximation of what the police precincts in Manhattan look like.
