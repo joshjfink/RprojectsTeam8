@@ -49,8 +49,11 @@ z = inner_join(addr, tax)
 #### Remove outliers using mvoutlier package
 outs <-  na.omit(data.matrix(z[,2:4]))
 x.out=sign2(outs,makeplot=FALSE)
-summary(x.out)
 addr2 <- tbl_df(cbind(data.frame(Out=x.out$wfinal01), outs))
+
+addr2 <- addr2 %>%
+mutate(newout=ifelse(Violation.Precinct ==1 | Violation.Precinct ==5 | Violation.Precinct ==6 | Violation.Precinct ==7 | Violation.Precinct ==9 | Violation.Precinct ==10 | Violation.Precinct ==13 | Violation.Precinct ==14 | Violation.Precinct ==17 | Violation.Precinct ==18 | Violation.Precinct ==19 | Violation.Precinct ==20, Out, 1)) 
+addr2$Out <- addr2$newout
 addr <- filter(addr2, Out==1) %>%
             select(Violation.Precinct, x, y)
 
