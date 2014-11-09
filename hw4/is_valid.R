@@ -47,5 +47,4 @@
 	if(c("FALSE") %in% as.character(
 		lapply(g, function(x){
 			x$weights > 0
-
 	}))) stop("No, only positive weights allowed")
