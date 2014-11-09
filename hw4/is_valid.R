@@ -44,7 +44,7 @@
 	})
 
 # Check that all weights are not less than or equal to 0.
-	if(c("FALSE") %in% as.character(
+	expect_false(c("FALSE") %in% as.character(
 		lapply(g, function(x){
 			x$weights > 0
-	}))) stop("No, only positive weights allowed")
+	})))
