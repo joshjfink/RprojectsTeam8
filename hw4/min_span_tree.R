@@ -46,7 +46,7 @@ add_vertex = function(from,to,weight,g_new=g_new)
 
 min_span_tree = function(g)
 {
-  
+  source("is_undirected.R")
   stopifnot(is_undirected(g))
   
   n = length(g)
