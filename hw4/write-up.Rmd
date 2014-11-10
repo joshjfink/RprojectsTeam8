@@ -4,9 +4,8 @@ author: "team 8"
 date: "11/9/2014"
 output: html_document
 ---
-1.$min_span_tree$.R
-We use the Prim Algorithm, we use $get_adj_mat2$ function to get the adjacent matrix (use Inf rather than 0);  we use add_vertex function to add vertex for minimum span tree. In the main function, U is used to store the vertexs which has been included in the function; V is the vertexs which is not included in the function. adjvex represents the minimal-weight edges between each vertex to U; lowcost stores the weight of these edges. Each time a vertex will be included into U, then adjvex and lowcost will be updated.
+1.min_span_tree.R
+According to the Prim Algorithm, we use get_adj_mat2 function to get the adjacent matrix (use Inf rather than 0 as default value of the matrix);  then we use add_vertex function to add vertex for minimum span tree. In the main function, U is used to store the vertexs which has been included in the function; V is the vertexs which is not included in the function. adjvex represents the minimal-weight edges between each vertex to U; lowcost stores the weight of these edges. Each time a vertex will be included into U, then adjvex and lowcost will be updated.
 
-2.$shortest_path$.R
-We use the idea of recursive. The function $path_len$ is used to calculate the length of a path; $short_path$ is the main recursive function.
-
+2.shortest_path.R
+We use the idea of recursive. The function path_len is used to calculate the length of a path; short_path is the main recursive function.
