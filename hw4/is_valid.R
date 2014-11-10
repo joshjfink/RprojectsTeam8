@@ -13,13 +13,9 @@ length(g)==length(names(g))
 	})
 	expect_error(expect_match(t, "TRUE"))
 	# Check that each secondary list contains only edges and weights vectors that are of the appropriate type.
-	lapply(g, function(x){
-		names(x) == c("edges", "weights") | names(x) == c("weights", "edges")
-	})
-	# Check that all weights are not less than or equal to 0.
-	expect_false(c("FALSE") %in% as.character(
-		lapply(g, function(x){
-			x$weights > 0
-	})))
+	for(i in 1:length(g)){
+	n <- names(g[[i]])== c("edges", "weights") | names(g[[i]])== c("weights", "edges")}
+	expect_match(n, "TRUE")
+	expect_error(expect_match(n, "FALSE"))
 	TRUE
 }
