@@ -6,6 +6,7 @@
 
 shortest_path = function(g,v1,v2)
 {
+  
   path_len = function(m,visited)
   {
     if(length(visited)==0||length(visited)==1) return(Inf)
