@@ -37,11 +37,24 @@ shortest_path = function(g,v1,v2)
     if(is.null(ind)) return(NULL)
     return(c(short_path(v1,ind,m,visited),v2))
   }
+  get_adj_mat2 = function(g, trans_mat=FALSE)
+  {
+    
+    n = length(g)
+    m = matrix(Inf, ncol=n, nrow=n)
+    
+    colnames(m) = names(g)
+    rownames(m) = names(g)
+    
+    for(i in 1:n)
+      m[i, g[[i]]$edges] = ifelse(array(length(g[[i]]$weights)==0,length(g[[i]]$edges)),0,ifelse(array(trans_mat,length(g[[i]]$edges)), g[[i]]$weights/sum(g[[i]]$weights), g[[i]]$weights))
+    
+    return(m)
+  }
   if(is.character(v1)==F)v1=names(g)[v1]
   if(is.character(v2)==F)v2=names(g)[v2]
   source("is_valid.R")
   stopifnot(is_valid(g))
-  source("min_span_tree.R")
   m = get_adj_mat2(g)
   visited = integer()
   if (v1 %in% visited) break;
