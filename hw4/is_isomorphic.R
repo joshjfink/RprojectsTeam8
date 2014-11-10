@@ -5,8 +5,15 @@
 is_isomorphic = function(g1, g2)
 {
    # Check all vertices are dientical. Comparison of vertices should be based on names not indexes--indexes should only be used if vertex labels are not defined.
-		expect_identical(names(g1), names(g2))
-	# Check all edges are dientical
-		expect_identical(g1, g2)
-	TRUE
+	# is_valid(g1)
+	# is_valid(g2)
+
+	g3 <- g2
+for(i in 1:length(g1)){
+	g3[[names(g1)[i]]]$edges <- g1[[names(g1)[i]]]$edges
 }
+g3 <- g3[names(g1)]
+all(g1 %in% g3)
+
+}
+
