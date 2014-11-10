@@ -22,19 +22,19 @@ is_connected = function(g, v1, v2){
             path = c(path, g[[path[i]]]$edges)
           }
           if(v2 %in% path | v2 %in% name){
-            return(TRUE)
+            TRUE
           } else{
-            return(FALSE)
+            FALSE
           }
         }
       } else{
-        return("error")
+        stop("error")
       }
     } else{
-      return("error")
+      stop("error")
     }
     
   } else{
-    return("error")
+    stop("error")
   }
 }
