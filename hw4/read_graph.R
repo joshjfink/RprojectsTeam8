@@ -1,6 +1,6 @@
 read_graph = function(file){
   library(stringr)
-  raw = readLines(file)
+  graph = as.matrix(read.table(file, fill = TRUE),ncol = 4)
   
   # some string matching here
   
