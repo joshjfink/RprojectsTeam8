@@ -11,7 +11,7 @@ is_valid = function(g)
 	expect_error(expect_match(t, "TRUE"))
 	# Check that each secondary list contains only edges and weights vectors that are of the appropriate type.
 	lapply(g, function(x){
-	  expect_identical(names(x), c("edges", "weights"))
+		names(x) == c("edges", "weights") | names(x) == c("weights", "edges")
 	})
 	# Check that there are not any edges to non-existent vertices.
 	lapply(g, function(x){
