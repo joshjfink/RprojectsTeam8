@@ -1,3 +1,9 @@
+# Function - is_connected
+# Input - g, a graph object; v1, a vertex label in g; v2, a vertex label in g.
+# Output - true if there is a path from v1 to v2 in g, false if not.
+# Description - Determine if there is any path between vertex v1 and vertex v2 in graph g. If v1 or v2 are not in g then throw an error.
+
+
 is_connected = function(g, v1, v2){
   if(is.list(g)){
     if(is_valid(g)){
@@ -16,19 +22,19 @@ is_connected = function(g, v1, v2){
             path = c(path, g[[path[i]]]$edges)
           }
           if(v2 %in% path | v2 %in% name){
-            return(TRUE)
+            TRUE
           } else{
-            return(FALSE)
+            FALSE
           }
         }
       } else{
-        return("error")
+        stop("error")
       }
     } else{
-      return("error")
+      stop("error")
     }
     
   } else{
-    return("error")
+    stop("error")
   }
 }

@@ -14,3 +14,4 @@ is_undirected = function(g)
 		m.direct <- which(abs(m-t(m))!=0,arr.ind = T)
 		ifelse(length(m.direct)==0, TRUE, FALSE)
 }
+
