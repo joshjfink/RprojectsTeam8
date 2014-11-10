@@ -4,16 +4,13 @@
 
 is_isomorphic = function(g1, g2)
 {
-   # Check all vertices are dientical. Comparison of vertices should be based on names not indexes--indexes should only be used if vertex labels are not defined.
-	# is_valid(g1)
-	# is_valid(g2)
-
-	g3 <- g2
+	# Match the edges in g2 based on their order in g1
 for(i in 1:length(g1)){
-	g3[[names(g1)[i]]]$edges <- g1[[names(g1)[i]]]$edges
+	g2[[names(g1)[i]]]$edges <- g1[[names(g1)[i]]]$edges
 }
-g3 <- g3[names(g1)]
-all(g1 %in% g3)
-
+# Match the edge/name order in g2 w/g1
+g2 <- g2[names(g1)]
+# Test for equivalence
+all(g1 %in% g2)
 }
 
