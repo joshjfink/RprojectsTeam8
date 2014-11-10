@@ -16,13 +16,13 @@ _(still in 'beta')_
  Creating the isomorphic function was a deceptively irksome task. The first version of it was well over 50 lines of code attempting to bob and weave through specific restrictions we deemed testable. As the work progressed, brevity in syntax and accuracy in performance showed a strong assoicaiton, and the version of the function we present here is only a few line of code.
  We use a for loop to match the edges in graph2 to the names for the edges in graph 1, we then resort the graphs and use the %in% operator to test for equivalence
 
-**is\_isconnected.R**
+**is\_isconnected.R**  
 _(still in 'beta')__
 
 ### INPUT/OUTPUT
 ***
 
-**write\_graph.R**
+**write\_graph.R**  
 _(description here)_
 
 **read\_graph.R**
